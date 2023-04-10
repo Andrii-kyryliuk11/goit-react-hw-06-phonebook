@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import css from './ContactForm.module.css';
+import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'components/Redux/contactsSlice';
 
-export default function ContactForm({ onFormSubmit }) {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.list);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -25,7 +30,22 @@ export default function ContactForm({ onFormSubmit }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    onFormSubmit(name, number);
+    const arrayOfNames = contacts.map(contact => contact.name.toLowerCase());
+
+    if (contacts.length === 0) {
+      dispatch(addContact({ name: name, number: number, id: nanoid() }));
+      setName('');
+      setNumber('');
+      return;
+    }
+
+    if (arrayOfNames.includes(name.toLowerCase())) {
+      alert(`${name} is alerady in Contacts`);
+      setName('');
+      setNumber('');
+      return;
+    }
+    dispatch(addContact({ name: name, number: number, id: nanoid() }));
     setName('');
     setNumber('');
   };
@@ -55,4 +75,4 @@ export default function ContactForm({ onFormSubmit }) {
       </button>
     </form>
   );
-}
+};

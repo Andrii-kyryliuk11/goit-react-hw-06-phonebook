@@ -1,12 +1,16 @@
+import { changeValue } from 'components/Redux/filter';
+import { useDispatch } from 'react-redux';
 import css from './Filter.module.css';
 
-export const Filter = ({ handleFilter }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+
   return (
     <input
       className={css.input}
       type="text"
       name="filter"
-      onChange={e => handleFilter(e.currentTarget.value)}
+      onChange={e => dispatch(changeValue(e.currentTarget.value))}
     />
   );
 };
