@@ -1,4 +1,4 @@
-import { changeValue } from 'components/Redux/filter';
+import { changeValue } from 'Redux/filter';
 import { useDispatch } from 'react-redux';
 import css from './Filter.module.css';
 
